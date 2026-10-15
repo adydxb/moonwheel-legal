@@ -25,4 +25,4 @@ The policy reflects the inspected Moonwheel code as of the review date: no Moonw
 
 ## Hosting
 
-Live at **https://moonwheel.app** (and www) as a Cloudflare Worker serving these files as static assets. Deploy with `npx wrangler deploy` from this folder; `.assetsignore` keeps README, config and git files off the site. Clean URLs (`/privacy`, `/terms`, `/support`); the old `.html` paths redirect. The GitHub Pages copy at adydxb.github.io/moonwheel-legal stays up for app builds that still link there.
+Live at **https://moonwheel.app** (and www) as a Cloudflare Worker serving these files as static assets. Deploy with `npx wrangler deploy` from this folder; `.assetsignore` keeps README, config and git files off the site. `/` is the marketing home page (`index.html`, self-contained, art in `assets/`); the legal hub moved to `/legal`. Clean URLs (`/privacy`, `/terms`, `/support`); the old `.html` paths redirect. The GitHub Pages copy at adydxb.github.io/moonwheel-legal stays up for app builds that still link there.

@@ -2,40 +2,657 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Privacy, terms, and support information for the Moonwheel app.">
-  <title>Moonwheel · Legal &amp; Support</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Moonwheel · Gentle bedtime stories &amp; sleep sounds</title>
+  <meta name="description" content="Moonwheel is a calm bedtime app for little ones: sung lullaby stories, narrated dream journeys, soothing harmonies, ambient sounds and a music box, set in hand-painted night scenes.">
+  <meta name="theme-color" content="#08111f">
+  <meta property="og:title" content="Moonwheel · Gentle bedtime stories & sleep sounds">
+  <meta property="og:description" content="Sung lullaby stories, dream journeys, soft harmonies and ambient sounds in hand-painted night scenes.">
+  <meta property="og:image" content="https://moonwheel.app/assets/og.jpg">
+  <meta property="og:url" content="https://moonwheel.app/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/lullaby-stories.webp">
+  <style>
+    :root {
+      color-scheme: dark;
+      --night: #08111f;
+      --night-2: #0d1a2f;
+      --night-3: #14264a;
+      --cream: #f6eddd;
+      --cream-muted: #c9bfae;
+      --gold: #e8b86d;
+      --gold-bright: #f6d395;
+      --gold-glow: rgba(232, 184, 109, 0.35);
+      --line: rgba(246, 237, 221, 0.12);
+      --glass: rgba(13, 26, 47, 0.55);
+      --serif: "Lora", Georgia, "Times New Roman", serif;
+      --sans: "Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--night);
+      color: var(--cream);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    main { overflow-x: clip; }
+    img { display: block; max-width: 100%; }
+    a { color: var(--gold); text-underline-offset: 0.2em; }
+    a:hover { color: var(--gold-bright); }
+
+    /* ---------- Sky ---------- */
+    .sky {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse 80% 60% at 75% 0%, rgba(58, 86, 150, 0.45), transparent 70%),
+        radial-gradient(ellipse 60% 50% at 10% 30%, rgba(40, 60, 120, 0.25), transparent 70%),
+        linear-gradient(180deg, #0a1630 0%, var(--night) 55%, #060c17 100%);
+    }
+    #stars { position: fixed; inset: 0; z-index: -1; width: 100%; height: 100%; pointer-events: none; }
+
+    .wrap { width: min(calc(100% - 32px), var(--max)); margin-inline: auto; }
+
+    /* ---------- Header ---------- */
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(8, 17, 31, 0.85), rgba(8, 17, 31, 0.35));
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.4s;
+    }
+    .top.scrolled { border-bottom-color: var(--line); }
+    .top .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .wordmark {
+      display: flex; align-items: center; gap: 10px;
+      color: var(--cream); text-decoration: none;
+      font-family: var(--serif); font-weight: 600; letter-spacing: 0.22em; font-size: 15px;
+    }
+    .wordmark img { width: 34px; height: 34px; border-radius: 9px; }
+    .top nav { display: flex; gap: 22px; font-size: 15px; }
+    .top nav a { color: var(--cream-muted); text-decoration: none; }
+    .top nav a:hover { color: var(--cream); }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      min-height: calc(100vh - 68px);
+      min-height: calc(100svh - 68px);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 48px;
+      padding: 40px 0 80px;
+    }
+    .moon {
+      width: 96px;
+      height: auto;
+      margin: 0 0 22px -6px;
+      opacity: 0.95;
+      filter: drop-shadow(0 0 40px rgba(112, 176, 220, 0.45));
+      animation: bob 9s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .eyebrow {
+      font-family: var(--serif);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      font-size: 13px;
+      color: var(--gold);
+      margin: 0 0 18px;
+    }
+    h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.1; margin: 0; }
+    .hero h1 { font-size: clamp(44px, 6.4vw, 82px); letter-spacing: -0.01em; }
+    .hero h1 em {
+      font-style: italic; font-weight: 500;
+      background: linear-gradient(100deg, var(--gold) 0%, var(--gold-bright) 45%, var(--gold) 90%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: shimmer 7s ease-in-out infinite;
+    }
+    .hero .lede { font-size: clamp(17px, 1.6vw, 20px); color: var(--cream-muted); max-width: 33rem; margin: 26px 0 34px; }
+    .stores { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .store {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(232, 184, 109, 0.5);
+      background: rgba(232, 184, 109, 0.08);
+      color: var(--cream);
+      font-weight: 500; font-size: 15px;
+      text-decoration: none;
+    }
+    .store svg { width: 18px; height: 18px; fill: var(--gold); flex: none; }
+    .store small { display: block; font-size: 11px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.2; }
+    .store span { line-height: 1.2; }
+    .note { margin-top: 18px; font-size: 14px; color: var(--cream-muted); }
+
+    /* ---------- Phone ---------- */
+    .phone {
+      position: relative;
+      width: min(300px, 78vw);
+      aspect-ratio: 600 / 1304;
+      border-radius: 46px;
+      padding: 10px;
+      background: linear-gradient(145deg, #2a3550, #0c1424 60%, #222c42);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+        0 40px 80px -20px rgba(0, 0, 0, 0.7),
+        0 0 90px -10px rgba(90, 130, 210, 0.35);
+    }
+    .phone .screen { position: relative; width: 100%; height: 100%; border-radius: 37px; overflow: hidden; background: #050a14; }
+    .phone .screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hero-phone { justify-self: center; position: relative; animation: float 8s ease-in-out infinite; }
+    .hero-phone::before {
+      content: ""; position: absolute; inset: -18% -30%; z-index: -1;
+      background: radial-gradient(closest-side, rgba(232, 184, 109, 0.22), transparent 70%);
+      animation: breathe 6s ease-in-out infinite;
+    }
+    .slides img { opacity: 0; transform: scale(1.06); transition: opacity 1.4s ease, transform 7s ease; }
+    .slides img.on { opacity: 1; transform: scale(1); }
+    .slide-label {
+      position: absolute; left: 50%; bottom: -54px; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 14px; white-space: nowrap;
+    }
+    .slide-label b { font-family: var(--serif); font-weight: 600; font-size: 17px; min-width: 9.5em; text-align: center; transition: opacity 0.5s; }
+    .dots { display: flex; gap: 7px; }
+    .dots button {
+      width: 7px; height: 7px; padding: 0; border: 0; border-radius: 99px;
+      background: rgba(246, 237, 221, 0.28); cursor: pointer; transition: width 0.4s, background 0.4s;
+    }
+    .dots button.on { width: 22px; background: var(--gold); }
+    .scroll-cue {
+      position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
+      width: 22px; height: 36px; border: 1.5px solid rgba(246, 237, 221, 0.35); border-radius: 12px;
+    }
+    .scroll-cue::after {
+      content: ""; position: absolute; left: 50%; top: 7px; width: 3px; height: 7px; margin-left: -1.5px;
+      border-radius: 2px; background: var(--gold); animation: cue 2.2s ease-in-out infinite;
+    }
+
+    /* ---------- Sections ---------- */
+    section { padding: 110px 0; }
+    .section-head { text-align: center; max-width: 40rem; margin: 0 auto 70px; }
+    .section-head h2 { font-size: clamp(34px, 4.4vw, 54px); }
+    .section-head p { color: var(--cream-muted); font-size: 18px; margin: 18px 0 0; }
+
+    .world {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 70px;
+      padding: 50px 0;
+    }
+    .world:nth-of-type(even) .world-copy { order: 2; }
+    .world .phone { justify-self: center; width: min(270px, 70vw); }
+    .world-num { font-family: var(--serif); color: var(--gold); font-size: 14px; letter-spacing: 0.3em; }
+    .world h3 { font-size: clamp(30px, 3.6vw, 44px); margin: 12px 0 18px; }
+    .world p { color: var(--cream-muted); margin: 0 0 18px; max-width: 30rem; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .chip {
+      padding: 6px 14px; border-radius: 999px; font-size: 14px;
+      border: 1px solid var(--line); background: var(--glass); color: var(--cream);
+    }
+
+    .musicbox {
+      margin: 60px auto 0;
+      max-width: 820px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 32px;
+      align-items: center;
+      padding: 40px;
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(232, 184, 109, 0.1), rgba(20, 38, 74, 0.5));
+    }
+    .musicbox .notes { position: relative; width: 120px; height: 120px; }
+    .musicbox .notes img { width: 120px; height: auto; animation: sway 6s ease-in-out infinite; }
+    .musicbox .notes i {
+      position: absolute; font-style: normal; color: var(--gold); font-size: 22px; opacity: 0;
+      animation: note 4.5s ease-in infinite;
+    }
+    .musicbox .notes i:nth-child(2) { left: 70%; top: 10%; animation-delay: 0s; }
+    .musicbox .notes i:nth-child(3) { left: 85%; top: 35%; animation-delay: 1.5s; }
+    .musicbox .notes i:nth-child(4) { left: 60%; top: 0; animation-delay: 3s; }
+    .musicbox h3 { font-size: 32px; margin-bottom: 10px; }
+    .musicbox p { margin: 0; color: var(--cream-muted); }
+
+    /* ---------- Read along ---------- */
+    .readalong {
+      position: relative;
+      border-radius: 36px;
+      overflow: hidden;
+      min-height: 560px;
+      display: flex;
+      align-items: flex-end;
+      border: 1px solid var(--line);
+    }
+    .readalong > img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%;
+      transform: scale(1.08); transition: transform 0.2s linear; will-change: transform;
+    }
+    .readalong::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(8, 17, 31, 0) 25%, rgba(8, 17, 31, 0.92) 85%);
+    }
+    .readalong .copy { position: relative; z-index: 1; padding: 48px; max-width: 40rem; }
+    .readalong h2 { font-size: clamp(32px, 4vw, 50px); }
+    .readalong p { color: var(--cream-muted); font-size: 18px; margin: 16px 0 0; }
+    .lyric {
+      font-family: var(--serif); font-size: clamp(22px, 2.6vw, 30px); color: var(--cream);
+      margin: 0 0 26px; min-height: 1.4em;
+    }
+    .lyric span { opacity: 0; display: inline-block; transform: translateY(8px); transition: opacity 0.5s, transform 0.5s; }
+    .lyric span.on { opacity: 1; transform: none; }
+
+    /* ---------- Features ---------- */
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .feature {
+      padding: 30px 28px; border-radius: 24px;
+      border: 1px solid var(--line); background: var(--glass);
+      transition: transform 0.4s ease, border-color 0.4s ease;
+    }
+    .feature:hover { transform: translateY(-4px); border-color: rgba(232, 184, 109, 0.4); }
+    .feature svg { width: 30px; height: 30px; stroke: var(--gold); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .feature h3 { font-size: 21px; margin: 18px 0 8px; }
+    .feature p { margin: 0; color: var(--cream-muted); font-size: 16px; }
+
+    /* ---------- Closing ---------- */
+    .closing { text-align: center; padding: 120px 0 90px; }
+    .closing .app-icon {
+      width: 104px; height: 104px; border-radius: 24px; margin: 0 auto 30px;
+      box-shadow: 0 0 60px rgba(112, 176, 220, 0.35); animation: bob 8s ease-in-out infinite;
+    }
+    .closing h2 { font-size: clamp(36px, 5vw, 60px); }
+    .closing p { color: var(--cream-muted); font-size: 18px; margin: 18px auto 34px; max-width: 32rem; }
+    .closing .stores { justify-content: center; }
+
+    footer { border-top: 1px solid var(--line); padding: 34px 0 calc(34px + env(safe-area-inset-bottom)); font-size: 14px; color: var(--cream-muted); }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+    footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
+    footer nav a { color: var(--cream-muted); text-decoration: none; }
+    footer nav a:hover { color: var(--cream); }
+
+    /* ---------- Reveal ---------- */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 1s ease, transform 1s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal.d1 { transition-delay: 0.12s; }
+    .reveal.d2 { transition-delay: 0.24s; }
+
+    @keyframes float { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-16px) rotate(1deg); } }
+    @keyframes bob { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-12px) rotate(3deg); } }
+    @keyframes sway { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+    @keyframes breathe { 0%, 100% { opacity: 0.6; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } }
+    @keyframes shimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    @keyframes cue { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(12px); } }
+    @keyframes note {
+      0% { opacity: 0; transform: translate(0, 10px) rotate(-10deg); }
+      20% { opacity: 1; }
+      100% { opacity: 0; transform: translate(26px, -50px) rotate(15deg); }
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 880px) {
+      .top nav a.hide-sm { display: none; }
+      .hero { grid-template-columns: 1fr; text-align: center; gap: 40px; padding: 30px 0 120px; }
+      .hero .lede { margin-inline: auto; }
+      .hero .stores { justify-content: center; }
+      .moon { width: 84px; margin: 0 auto 18px; }
+      .world { grid-template-columns: 1fr; gap: 36px; text-align: center; padding: 40px 0; }
+      .world:nth-of-type(even) .world-copy { order: 0; }
+      .world p { margin-inline: auto; }
+      .chips { justify-content: center; }
+      .features { grid-template-columns: 1fr 1fr; }
+      .musicbox { grid-template-columns: 1fr; text-align: center; justify-items: center; padding: 32px 24px; }
+      section { padding: 80px 0; }
+      .readalong { min-height: 520px; }
+      .readalong .copy { padding: 30px 24px; }
+      .scroll-cue { display: none; }
+    }
+    @media (max-width: 560px) {
+      .features { grid-template-columns: 1fr; }
+      .top nav { gap: 16px; font-size: 14px; }
+      .wordmark span { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+      .lyric span { opacity: 1; transform: none; }
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="index.html">Moonwheel</a>
-    <nav aria-label="Legal and support">
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="support.html">Support</a>
-    </nav>
-  </header>
-  <main>
-    <p class="eyebrow">Legal &amp; support</p>
-    <h1>Quiet moments,<br>clear terms.</h1>
-    <p class="lede">Moonwheel is a consumer sleep, meditation, and ambient-audio app. These pages explain how the app handles information, the terms that apply, and how to get help.</p>
-    <div class="grid">
-      <a class="card" href="privacy.html">
-        <h2>Privacy Policy</h2>
-        <p>What Moonwheel processes, what stays on your device, and your choices.</p>
-      </a>
-      <a class="card" href="terms.html">
-        <h2>Terms of Use</h2>
-        <p>Subscriptions, downloads, permitted use, and Apple’s Standard EULA.</p>
-      </a>
-      <a class="card" href="support.html">
-        <h2>Support</h2>
-        <p>Contact information and help with purchases, downloads, and playback.</p>
-      </a>
+  <div class="sky" aria-hidden="true"></div>
+  <canvas id="stars" aria-hidden="true"></canvas>
+
+  <header class="top" id="top">
+    <div class="wrap">
+      <a class="wordmark" href="/"><img src="assets/app-icon.png" alt="" width="34" height="34"><span>MOONWHEEL</span></a>
+      <nav aria-label="Main">
+        <a class="hide-sm" href="#worlds">Inside</a>
+        <a class="hide-sm" href="#features">Features</a>
+        <a href="support.html">Support</a>
+      </nav>
     </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="hero" aria-labelledby="hero-title">
+        <div>
+          <img class="moon" src="assets/moon.png" alt="" width="512" height="495">
+          <p class="eyebrow reveal">Bedtime, softly</p>
+          <h1 id="hero-title" class="reveal d1">Drift off to <em>gentle&nbsp;worlds.</em></h1>
+          <p class="lede reveal d2">Sung lullaby stories, dreamy journeys, soft harmonies and ambient sounds, set in hand‑painted night scenes. A calm way to end the day with your little one.</p>
+          <div class="stores reveal d2">
+            <span class="store" aria-label="Coming soon on the App Store">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.3.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.8-1-2.8-4.2zM14 5.3c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>
+              <span><small>Coming soon</small>App Store</span>
+            </span>
+            <span class="store" aria-label="Coming soon on Google Play">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 2.3c-.3.3-.4.7-.4 1.2v17c0 .5.1.9.4 1.2l9.6-9.7-9.6-9.7zm10.6 10.7 2.7 2.7-11.4 6.5 8.7-9.2zm0-2L5.5 1.8l11.4 6.5-2.7 2.7zm3.9-1.9 3 1.7c.9.5.9 1.9 0 2.4l-3 1.7-3-2.9 3-2.9z"/></svg>
+              <span><small>Coming soon</small>Google Play</span>
+            </span>
+          </div>
+          <p class="note reveal d2">For iPhone, iPad and Android.</p>
+        </div>
+
+        <div class="hero-phone reveal d1">
+          <div class="phone">
+            <div class="screen slides" id="slides">
+              <img class="on" src="assets/lullaby-stories.webp" alt="Lullaby Stories: a child in a glowing moon boat on a starlit lake" data-label="Lullaby Stories">
+              <img src="assets/dream-journeys.webp" alt="Dream Journeys: a girl watering her sunflower garden" data-label="Dream Journeys" loading="lazy">
+              <img src="assets/harmonies.webp" alt="Harmonies: a sleep music playlist over a rainy window scene" data-label="Harmonies" loading="lazy">
+              <img src="assets/read-along.webp" alt="Words of a lullaby shown over a child watching a moonlit village" data-label="Read Along" loading="lazy">
+            </div>
+          </div>
+          <div class="slide-label" aria-live="polite">
+            <b id="slide-name">Lullaby Stories</b>
+            <div class="dots" id="dots"></div>
+          </div>
+        </div>
+        <a class="scroll-cue" href="#worlds" aria-label="Scroll to see more"></a>
+      </section>
+    </div>
+
+    <section id="worlds">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Inside Moonwheel</p>
+          <h2>Five gentle worlds, one wheel.</h2>
+          <p>Swipe between them like turning the pages of a picture book. Each one has its own painted night and its own way of winding down.</p>
+        </div>
+
+        <article class="world">
+          <div class="world-copy reveal">
+            <span class="world-num">01</span>
+            <h3>Lullaby Stories</h3>
+            <p>Soft, sung stories that carry a little one off to sleep, like <em>The Moon Boat</em>, where a boy sails a glowing boat across a starlit lake, and <em>Beneath the Moon</em>.</p>
+            <p>The words appear gently on screen as they are sung, so you can sing along.</p>
+            <div class="chips"><span class="chip">Sung stories</span><span class="chip">Words on screen</span><span class="chip">Painted scenes</span></div>
+          </div>
+          <div class="phone reveal d1"><div class="screen"><img src="assets/lullaby-stories.webp" alt="Lullaby Stories screen" loading="lazy"></div></div>
+        </article>
+
+        <article class="world">
+          <div class="world-copy reveal">
+            <span class="world-num">02</span>
+            <h3>Dream Journeys</h3>
+            <p>Calm, narrated adventures with warm, hand‑painted illustrations, like <em>The Girl Who Wanted the Biggest Garden</em>. Small stories with big, soft endings.</p>
+            <div class="chips"><span class="chip">Narrated</span><span class="chip">Story picker</span><span class="chip">Hand‑painted art</span></div>
+          </div>
+          <div class="phone reveal d1"><div class="screen"><img src="assets/dream-journeys.webp" alt="Dream Journeys screen" loading="lazy"></div></div>
+        </article>
+
+        <article class="world">
+          <div class="world-copy reveal">
+            <span class="world-num">03</span>
+            <h3>Harmonies</h3>
+            <p>Slow, soothing music for every part of the night, grouped into playlists you can loop for as long as you need.</p>
+            <div class="chips"><span class="chip">Sleep</span><span class="chip">Relax</span><span class="chip">Womb Lullabies</span></div>
+          </div>
+          <div class="phone reveal d1"><div class="screen"><img src="assets/harmonies.webp" alt="Harmonies screen" loading="lazy"></div></div>
+        </article>
+
+        <article class="world">
+          <div class="world-copy reveal">
+            <span class="world-num">04</span>
+            <h3>Ambient Sounds</h3>
+            <p>Build your own calm. Layer a river with gentle waves, add rain, birds or crickets, and set each sound's volume until it feels just right.</p>
+            <div class="chips"><span class="chip">Nature</span><span class="chip">Rain</span><span class="chip">Animals</span><span class="chip">Your own mix</span></div>
+          </div>
+          <div class="phone reveal d1"><div class="screen"><img src="assets/ambient-sounds.webp" alt="Ambient Sounds mixer screen" loading="lazy"></div></div>
+        </article>
+
+        <div class="musicbox reveal">
+          <div class="notes" aria-hidden="true">
+            <img src="assets/moon.png" alt="" width="120" height="116">
+            <i>♪</i><i>♫</i><i>♩</i>
+          </div>
+          <div>
+            <span class="world-num">05</span>
+            <h3>Music Box</h3>
+            <p>Classic, tinkling melodies like Moonlight Waltz, played on a turning moon carousel. The simplest goodnight there is.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="readalong-title">
+      <div class="wrap">
+        <div class="readalong reveal" id="readalong">
+          <img src="assets/read-along.webp" alt="" loading="lazy">
+          <div class="copy">
+            <p class="lyric" id="lyric" aria-hidden="true"></p>
+            <h2 id="readalong-title">Made for the last few minutes of the day.</h2>
+            <p>Full‑screen scenes, quiet controls that fade away, and nothing flashing or noisy. Just the story, the music and a softly lit room.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Thoughtful by design</p>
+          <h2>Everything bedtime needs. Nothing it doesn't.</h2>
+        </div>
+        <div class="features">
+          <div class="feature reveal">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>
+            <h3>Sleep timer</h3>
+            <p>Let the music fade out on its own once they've drifted off.</p>
+          </div>
+          <div class="feature reveal d1">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><path d="M4 4l16 16"/></svg>
+            <h3>Controls that hide</h3>
+            <p>Buttons fade away so only the painted scene stays on screen.</p>
+          </div>
+          <div class="feature reveal d2">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>
+            <h3>Keep screen on</h3>
+            <p>Keep the scene glowing like a night light for as long as you like.</p>
+          </div>
+          <div class="feature reveal">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4"/><path d="M5 21h14"/></svg>
+            <h3>Plays offline</h3>
+            <p>Download the stories and music you love and play them without a connection.</p>
+          </div>
+          <div class="feature reveal d1">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M2 9a6 6 0 0 1 6 6M2 12.5A2.5 2.5 0 0 1 4.5 15"/></svg>
+            <h3>Cast to your TV</h3>
+            <p>Send the scene to a Chromecast‑enabled TV and turn the whole room into a night sky.</p>
+          </div>
+          <div class="feature reveal d2">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+            <h3>No ads, no account</h3>
+            <p>No advertising and no sign-up. Open it and press play.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="wrap reveal">
+        <img class="app-icon" src="assets/app-icon.png" alt="Moonwheel app icon" width="104" height="104">
+        <h2>Goodnight, little one.</h2>
+        <p>Moonwheel is coming soon to the App Store and Google Play.</p>
+        <div class="stores">
+          <span class="store"><span><small>Coming soon</small>App Store</span></span>
+          <span class="store"><span><small>Coming soon</small>Google Play</span></span>
+        </div>
+      </div>
+    </section>
   </main>
-  <footer class="site-footer">© 2026 Moonwheel · <a href="mailto:support@moonwheel.app">support@moonwheel.app</a></footer>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 Moonwheel · <a href="mailto:support@moonwheel.app">support@moonwheel.app</a></span>
+      <nav aria-label="Legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="support.html">Support</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* Starfield with twinkle, slow drift and the odd shooting star. */
+      var canvas = document.getElementById('stars');
+      var ctx = canvas.getContext('2d');
+      var stars = [], shooters = [], w, h, dpr;
+      function size() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = window.innerWidth; h = window.innerHeight;
+        canvas.width = w * dpr; canvas.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        var count = Math.round(w * h / 5200);
+        stars = [];
+        for (var i = 0; i < count; i++) {
+          stars.push({
+            x: Math.random() * w, y: Math.random() * h,
+            r: Math.random() < 0.08 ? 1.3 + Math.random() : 0.4 + Math.random() * 0.8,
+            p: Math.random() * Math.PI * 2, s: 0.4 + Math.random() * 1.4,
+            gold: Math.random() < 0.18
+          });
+        }
+      }
+      var scrollY = 0;
+      function frame(t) {
+        ctx.clearRect(0, 0, w, h);
+        var off = scrollY * 0.08;
+        for (var i = 0; i < stars.length; i++) {
+          var s = stars[i];
+          var a = reduce ? 0.8 : 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t / 1000 * s.s + s.p));
+          var y = ((s.y - off * s.r) % h + h) % h;
+          ctx.globalAlpha = a;
+          ctx.fillStyle = s.gold ? '#f6d395' : '#e9eefc';
+          ctx.beginPath(); ctx.arc(s.x, y, s.r, 0, 6.283); ctx.fill();
+          if (s.r > 1.6) {
+            ctx.globalAlpha = a * 0.25;
+            ctx.beginPath(); ctx.arc(s.x, y, s.r * 3.5, 0, 6.283); ctx.fill();
+          }
+        }
+        if (!reduce && Math.random() < 0.004 && shooters.length < 2) {
+          shooters.push({ x: Math.random() * w * 0.8 + w * 0.2, y: Math.random() * h * 0.4, v: 7 + Math.random() * 5, life: 1 });
+        }
+        for (var j = shooters.length - 1; j >= 0; j--) {
+          var m = shooters[j];
+          m.x -= m.v; m.y += m.v * 0.45; m.life -= 0.014;
+          if (m.life <= 0) { shooters.splice(j, 1); continue; }
+          var g = ctx.createLinearGradient(m.x, m.y, m.x + 90, m.y - 40);
+          g.addColorStop(0, 'rgba(246,211,149,' + m.life + ')');
+          g.addColorStop(1, 'rgba(246,211,149,0)');
+          ctx.globalAlpha = 1; ctx.strokeStyle = g; ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(m.x + 90, m.y - 40); ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+        if (!reduce) requestAnimationFrame(frame);
+      }
+      size(); requestAnimationFrame(frame);
+      window.addEventListener('resize', function () { size(); if (reduce) frame(0); });
+
+      /* Header border + read-along parallax on scroll. */
+      var top = document.getElementById('top');
+      var ra = document.getElementById('readalong');
+      var raImg = ra.querySelector('img');
+      window.addEventListener('scroll', function () {
+        scrollY = window.scrollY;
+        top.classList.toggle('scrolled', scrollY > 10);
+        if (!reduce) {
+          var r = ra.getBoundingClientRect();
+          var k = (r.top + r.height / 2 - h / 2) / h;
+          raImg.style.transform = 'scale(1.12) translateY(' + (k * 40).toFixed(1) + 'px)';
+        }
+      }, { passive: true });
+
+      /* Hero phone slideshow. */
+      var slides = Array.prototype.slice.call(document.querySelectorAll('#slides img'));
+      var dots = document.getElementById('dots');
+      var name = document.getElementById('slide-name');
+      var cur = 0, timer;
+      slides.forEach(function (img, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-label', 'Show ' + img.dataset.label);
+        if (i === 0) b.className = 'on';
+        b.addEventListener('click', function () { show(i); restart(); });
+        dots.appendChild(b);
+      });
+      function show(i) {
+        slides[cur].classList.remove('on'); dots.children[cur].classList.remove('on');
+        cur = i;
+        slides[cur].classList.add('on'); dots.children[cur].classList.add('on');
+        name.style.opacity = 0;
+        setTimeout(function () { name.textContent = slides[cur].dataset.label; name.style.opacity = 1; }, 250);
+      }
+      function restart() { clearInterval(timer); timer = setInterval(function () { show((cur + 1) % slides.length); }, 4200); }
+      if (!reduce) restart();
+
+      /* Lyric that writes itself word by word. */
+      var lines = ['And stars came softly through the skies,', 'Have softly gone away.'];
+      var lyric = document.getElementById('lyric'), li = 0, started = false;
+      function sing() {
+        var words = lines[li].split(' ');
+        lyric.innerHTML = words.map(function (wd) { return '<span>' + wd + '&nbsp;</span>'; }).join('');
+        var spans = lyric.children;
+        if (reduce) { for (var k = 0; k < spans.length; k++) spans[k].className = 'on'; return; }
+        for (var n = 0; n < spans.length; n++) (function (n) { setTimeout(function () { spans[n].className = 'on'; }, 380 * n); })(n);
+        li = (li + 1) % lines.length;
+        setTimeout(sing, 380 * words.length + 2600);
+      }
+
+      /* Scroll reveal. */
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('in');
+          if (e.target === ra && !started) { started = true; sing(); }
+          io.unobserve(e.target);
+        });
+      }, { threshold: 0.18 });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    })();
+  </script>
 </body>
 </html>
-
