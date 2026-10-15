@@ -1,0 +1,6 @@
+.git
+.nojekyll
+README.md
+wrangler.jsonc
+.assetsignore
+.wrangler
