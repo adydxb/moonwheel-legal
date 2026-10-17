@@ -138,6 +138,9 @@
       font-weight: 500; font-size: 15px;
       text-decoration: none;
     }
+    a.store { background: rgba(232, 184, 109, 0.16); border-color: var(--gold); transition: background 0.2s ease, transform 0.2s ease; }
+    a.store:hover { background: rgba(232, 184, 109, 0.26); transform: translateY(-1px); }
+    a.store:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
     .store svg { width: 18px; height: 18px; fill: var(--gold); flex: none; }
     .store small { display: block; font-size: 11px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.2; }
     .store span { line-height: 1.2; }
@@ -362,10 +365,10 @@
           <h1 id="hero-title" class="reveal d1">Drift off to <em>gentle&nbsp;worlds.</em></h1>
           <p class="lede reveal d2">Sung lullaby stories, dreamy journeys, soft harmonies and ambient sounds, set in hand‑painted night scenes. A calm way to end the day with your little one.</p>
           <div class="stores reveal d2">
-            <span class="store" aria-label="Coming soon on the App Store">
+            <a class="store" href="https://apps.apple.com/app/id6805182580" aria-label="Download Moonwheel on the App Store">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.3.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.8-1-2.8-4.2zM14 5.3c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>
-              <span><small>Coming soon</small>App Store</span>
-            </span>
+              <span><small>Download on the</small>App Store</span>
+            </a>
             <span class="store" aria-label="Coming soon on Google Play">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 2.3c-.3.3-.4.7-.4 1.2v17c0 .5.1.9.4 1.2l9.6-9.7-9.6-9.7zm10.6 10.7 2.7 2.7-11.4 6.5 8.7-9.2zm0-2L5.5 1.8l11.4 6.5-2.7 2.7zm3.9-1.9 3 1.7c.9.5.9 1.9 0 2.4l-3 1.7-3-2.9 3-2.9z"/></svg>
               <span><small>Coming soon</small>Google Play</span>
@@ -513,9 +516,9 @@
       <div class="wrap reveal">
         <img class="app-icon" src="assets/app-icon.png" alt="Moonwheel app icon" width="104" height="104">
         <h2>Goodnight, little one.</h2>
-        <p>Moonwheel is coming soon to the App Store and Google Play.</p>
+        <p>Moonwheel is on the App Store now, and coming soon to Google Play.</p>
         <div class="stores">
-          <span class="store"><span><small>Coming soon</small>App Store</span></span>
+          <a class="store" href="https://apps.apple.com/app/id6805182580" aria-label="Download Moonwheel on the App Store"><span><small>Download on the</small>App Store</span></a>
           <span class="store"><span><small>Coming soon</small>Google Play</span></span>
         </div>
       </div>
